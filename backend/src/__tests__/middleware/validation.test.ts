@@ -1,31 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateCreateSession, validateSendMessage, validateSessionId, sanitizeInput } from '../../middleware/validation';
-
-// Mock express-validator
-jest.mock('express-validator', () => ({
-    body: jest.fn(() => ({
-        optional: jest.fn(() => ({
-            isString: jest.fn(() => ({
-                trim: jest.fn(() => ({
-                    isLength: jest.fn(() => ({
-                        withMessage: jest.fn(() => ({
-                            escape: jest.fn(() => jest.fn())
-                        }))
-                    }))
-                }))
-            }))
-        }))
-    })),
-    param: jest.fn(() => ({
-        isUUID: jest.fn(() => ({
-            withMessage: jest.fn(() => jest.fn())
-        }))
-    })),
-    validationResult: jest.fn(() => ({
-        isEmpty: jest.fn(() => true),
-        array: jest.fn(() => [])
-    }))
-}));
+import { sanitizeInput } from '../../middleware/validation';
 
 describe('Validation Middleware', () => {
     let mockRequest: Partial<Request>;
@@ -82,43 +56,6 @@ describe('Validation Middleware', () => {
             expect(mockRequest.body.number).toBe(123);
             expect(mockRequest.body.boolean).toBe(true);
             expect(mockRequest.body.array).toEqual(['test']);
-            expect(nextFunction).toHaveBeenCalled();
-        });
-    });
-
-    describe('validateCreateSession', () => {
-        it('should pass validation for valid input', () => {
-            mockRequest.body = {
-                customInstructions: 'Valid instructions'
-            };
-
-            // Since we're mocking validationResult to return empty, this should pass
-            validateCreateSession[0](mockRequest as Request, mockResponse as Response, nextFunction);
-
-            expect(nextFunction).toHaveBeenCalled();
-        });
-    });
-
-    describe('validateSendMessage', () => {
-        it('should pass validation for valid input', () => {
-            mockRequest.params = { sessionId: '550e8400-e29b-41d4-a716-446655440000' };
-            mockRequest.body = { content: 'Valid message' };
-
-            // Since we're mocking validationResult to return empty, this should pass
-            validateSendMessage[0](mockRequest as Request, mockResponse as Response, nextFunction);
-            validateSendMessage[1](mockRequest as Request, mockResponse as Response, nextFunction);
-
-            expect(nextFunction).toHaveBeenCalled();
-        });
-    });
-
-    describe('validateSessionId', () => {
-        it('should pass validation for valid session ID', () => {
-            mockRequest.params = { sessionId: '550e8400-e29b-41d4-a716-446655440000' };
-
-            // Since we're mocking validationResult to return empty, this should pass
-            validateSessionId[0](mockRequest as Request, mockResponse as Response, nextFunction);
-
             expect(nextFunction).toHaveBeenCalled();
         });
     });

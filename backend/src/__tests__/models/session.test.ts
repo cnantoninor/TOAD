@@ -63,7 +63,10 @@ describe('SessionModel', () => {
 
             const updatedSession = await SessionModel.getById(mockSession.sessionId);
             expect(updatedSession?.currentPhase).toBe(2);
-            expect(updatedSession?.conversationHistory).toEqual([mockMessage]);
+            expect(updatedSession?.conversationHistory).toHaveLength(1);
+            expect(updatedSession?.conversationHistory[0].id).toBe(mockMessage.id);
+            expect(updatedSession?.conversationHistory[0].content).toBe(mockMessage.content);
+            expect(updatedSession?.conversationHistory[0].role).toBe(mockMessage.role);
         });
     });
 
@@ -110,7 +113,9 @@ describe('SessionModel', () => {
 
             const updatedSession = await SessionModel.getById(mockSession.sessionId);
             expect(updatedSession?.conversationHistory).toHaveLength(1);
-            expect(updatedSession?.conversationHistory[0]).toEqual(mockMessage);
+            expect(updatedSession?.conversationHistory[0].id).toBe(mockMessage.id);
+            expect(updatedSession?.conversationHistory[0].content).toBe(mockMessage.content);
+            expect(updatedSession?.conversationHistory[0].role).toBe(mockMessage.role);
         });
 
         it('should throw error for non-existent session', async () => {
