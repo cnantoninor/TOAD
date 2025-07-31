@@ -92,11 +92,24 @@ describe('SessionModel', () => {
             };
             await SessionModel.create(oldSession);
 
-            // Manually update the lastAccessed to be old
+            // Manually update the lastAccessed to be old using direct database update
             const oldDate = new Date();
             oldDate.setDate(oldDate.getDate() - 31);
-            await SessionModel.update(oldSession.sessionId, {
-                lastAccessed: oldDate
+            const oldDateISO = oldDate.toISOString();
+
+            await new Promise<void>((resolve, reject) => {
+                const { db } = require('../../models/database');
+                db.run(
+                    'UPDATE sessions SET lastAccessed = ? WHERE sessionId = ?',
+                    [oldDateISO, oldSession.sessionId],
+                    function (err: any) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    }
+                );
             });
 
             const oldSessions = await SessionModel.getOldSessions(30);

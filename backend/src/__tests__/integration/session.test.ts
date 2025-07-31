@@ -2,6 +2,14 @@ import request from 'supertest';
 import express from 'express';
 import sessionRoutes from '../../routes/sessionRoutes';
 
+// Mock OpenAIService
+jest.mock('../../services/openai', () => ({
+    OpenAIService: {
+        generateResponse: jest.fn().mockResolvedValue('Mock AI response'),
+        validateApiKey: jest.fn().mockResolvedValue(true)
+    }
+}));
+
 // Set up environment variables for testing
 process.env.OPENAI_API_KEY = 'test-api-key';
 process.env.NODE_ENV = 'test';
@@ -55,7 +63,7 @@ describe('Session API Integration Tests', () => {
 
         it('should return 404 for non-existent session', async () => {
             await request(app)
-                .get('/api/sessions/non-existent-id')
+                .get('/api/sessions/123e4567-e89b-42d3-a456-426614174000')
                 .expect(404);
         });
     });
@@ -63,7 +71,7 @@ describe('Session API Integration Tests', () => {
     describe('GET /health', () => {
         it('should return health status', async () => {
             const response = await request(app)
-                .get('/health')
+                .get('/api/health')
                 .expect(200);
 
             expect(response.body).toHaveProperty('status');

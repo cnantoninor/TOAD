@@ -1,10 +1,18 @@
-import OpenAI from 'openai';
+import { OpenAI } from 'openai';
 import { Message, ConversationSummary } from '../types';
 import { Logger } from '../utils/logger';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy load OpenAI client to avoid instantiation during import
+let openai: OpenAI | null = null;
+
+function getOpenAIClient(): OpenAI {
+    if (!openai) {
+        openai = new OpenAI({
+            apiKey: process.env.OPENAI_API_KEY,
+        });
+    }
+    return openai;
+}
 
 const SYSTEM_PROMPT = `You are an 'Expert Software Architect AI', skilled in:
 
@@ -145,7 +153,7 @@ export class OpenAIService {
                 openaiMessages.splice(2, openaiMessages.length - 7); // Keep only recent messages
             }
 
-            const completion = await openai.chat.completions.create({
+            const completion = await getOpenAIClient().chat.completions.create({
                 model: process.env.OPENAI_MODEL || 'gpt-4',
                 messages: openaiMessages,
                 max_tokens: parseInt(process.env.OPENAI_MAX_TOKENS || '2000'),
@@ -190,7 +198,7 @@ export class OpenAIService {
                 .map(msg => `${msg.role}: ${msg.content}`)
                 .join('\n\n');
 
-            const completion = await openai.chat.completions.create({
+            const completion = await getOpenAIClient().chat.completions.create({
                 model: process.env.OPENAI_MODEL || 'gpt-4',
                 messages: [
                     { role: 'system', content: SUMMARIZATION_PROMPT },
@@ -234,7 +242,7 @@ export class OpenAIService {
 
     static async validateApiKey(): Promise<boolean> {
         try {
-            await openai.models.list();
+            await getOpenAIClient().models.list();
             return true;
         } catch (error) {
             Logger.error('OpenAI API key validation failed', error as Error);

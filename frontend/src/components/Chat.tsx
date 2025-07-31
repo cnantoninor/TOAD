@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Download, Plus } from 'lucide-react';
+import { Send, Download, Plus, Bot } from 'lucide-react';
 import { Message } from './Message';
 import { useSession } from '../contexts/SessionContext';
 import { sessionApi } from '../services/api';
@@ -185,7 +185,4 @@ export function Chat() {
             </div>
         </div>
     );
-}
-
-// Import Bot icon for the welcome message
-import { Bot } from 'lucide-react'; 
+} 

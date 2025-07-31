@@ -26,7 +26,10 @@ async function cleanupOldSessions() {
             process.exit(1);
         }
     } finally {
-        await closeDatabase();
+        // Only close database if not in test environment
+        if (process.env.NODE_ENV !== 'test') {
+            await closeDatabase();
+        }
     }
 }
 

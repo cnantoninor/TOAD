@@ -1,7 +1,4 @@
-import { OpenAIService } from '../../services/openai';
-import { Message } from '../../types';
-
-// Mock OpenAI
+// Mock OpenAI before imports
 const mockCreate = jest.fn();
 const mockList = jest.fn();
 
@@ -17,6 +14,9 @@ jest.mock('openai', () => ({
         }
     }))
 }));
+
+import { OpenAIService } from '../../services/openai';
+import { Message } from '../../types';
 
 describe('OpenAIService', () => {
     const mockMessages: Message[] = [

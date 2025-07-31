@@ -55,10 +55,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Request logging middleware
 app.use((req, res, next) => {
-    const start = Date.now();
-
     res.on('finish', () => {
-        const duration = Date.now() - start;
         Logger.logApiRequest(req.method, req.path, req.correlationId || 'unknown');
         Logger.logApiResponse(res.statusCode, req.correlationId || 'unknown');
     });
@@ -70,7 +67,7 @@ app.use((req, res, next) => {
 app.use('/api', sessionRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
     res.json({
         status: 'OK',
         timestamp: new Date().toISOString(),
@@ -89,7 +86,7 @@ app.use('*', (req, res) => {
 });
 
 // Global error handler
-app.use((error: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((error: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
     Logger.error('Unhandled error', error, {
         correlationId: req.correlationId,
         path: req.path,
