@@ -1,0 +1,73 @@
+# Testing Standards
+
+## Backend Testing
+- Use Jest configuration from [backend/jest.config.js](mdc:backend/jest.config.js)
+- Write tests in [backend/src/__tests__/](mdc:backend/src/__tests__/)
+- Mock OpenAI API calls using Jest mocks
+- Use Supertest for API endpoint testing
+
+### Test Structure
+```typescript
+describe('API Endpoint', () => {
+  it('should handle valid request', async () => {
+    // Test implementation
+  });
+  
+  it('should handle invalid request', async () => {
+    // Error case testing
+  });
+});
+```
+
+### Coverage Requirements
+- Aim for >80% test coverage
+- Test all critical paths
+- Include error scenarios
+- Mock external dependencies
+
+## Frontend Testing
+- Use React Testing Library for component tests
+- Write tests alongside components
+- Mock API service calls
+- Test user interactions and workflows
+
+### Component Testing
+```typescript
+import { render, screen, fireEvent } from '@testing-library/react';
+
+describe('Component', () => {
+  it('should render correctly', () => {
+    render(<Component />);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+  
+  it('should handle user interaction', () => {
+    render(<Component />);
+    fireEvent.click(screen.getByButtonText('Click me'));
+    // Assert expected behavior
+  });
+});
+```
+
+## Test Categories
+1. **Unit Tests**: Individual functions and components
+2. **Integration Tests**: API endpoints with real database
+3. **Component Tests**: React components with user interactions
+4. **Mocked Tests**: External API calls and dependencies
+
+## Best Practices
+- Use descriptive test names
+- Follow AAA pattern (Arrange, Act, Assert)
+- Test both success and failure scenarios
+- Keep tests independent and isolated
+- Use proper cleanup in afterEach/afterAll
+
+## Running Tests
+- Backend: `cd backend && npm test`
+- Frontend: `cd frontend && npm test`
+- Coverage: `npm run test:coverage`
+- Watch mode: `npm run test:watch`
+description:
+globs:
+alwaysApply: false
+---

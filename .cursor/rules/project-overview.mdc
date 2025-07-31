@@ -1,0 +1,37 @@
+# TOAD Architect - Project Overview
+
+## Project Description
+TOAD Architect is a web-based conversational software architecture assistant that helps software engineers and architects design, plan, and iterate on software architectures through systematic trade-off analysis.
+
+## Project Structure
+- **Backend**: Express.js API server with TypeScript
+  - Main entry: [backend/src/server.ts](mdc:backend/src/server.ts)
+  - Configuration: [backend/env.example](mdc:backend/env.example)
+  - Package config: [backend/package.json](mdc:backend/package.json)
+- **Frontend**: React SPA with TypeScript and Tailwind CSS
+  - Main entry: [frontend/src/index.tsx](mdc:frontend/src/index.tsx)
+  - App component: [frontend/src/App.tsx](mdc:frontend/src/App.tsx)
+  - Package config: [frontend/package.json](mdc:frontend/package.json)
+- **Documentation**: [README.md](mdc:README.md) contains comprehensive project information
+
+## Key Technologies
+- **Backend**: Node.js, Express.js, TypeScript, SQLite, OpenAI API
+- **Frontend**: React, TypeScript, Tailwind CSS, Axios
+- **Testing**: Jest, React Testing Library
+- **Development**: Nodemon, ts-node
+
+## MVP Limitations
+- Sessions auto-delete after 30 days
+- No authentication/authorization
+- Designed for 10 concurrent users
+- SQLite database (not production-ready)
+- Basic request/response only
+
+## Development Commands
+- Backend: `cd backend && npm run dev`
+- Frontend: `cd frontend && npm start`
+- Tests: `npm test` in respective directories
+description:
+globs:
+alwaysApply: false
+---

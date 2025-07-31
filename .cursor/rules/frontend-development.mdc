@@ -1,0 +1,47 @@
+# Frontend Development Guidelines
+
+## React Architecture
+Follow the established React structure:
+- **Components**: UI components in [frontend/src/components/](mdc:frontend/src/components/)
+- **Contexts**: React contexts in [frontend/src/contexts/](mdc:frontend/src/contexts/)
+- **Services**: API client in [frontend/src/services/](mdc:frontend/src/services/)
+- **Types**: TypeScript types in [frontend/src/types/](mdc:frontend/src/types/)
+
+## TypeScript Standards
+- Use TypeScript configuration from [frontend/tsconfig.json](mdc:frontend/tsconfig.json)
+- Define proper interfaces for all props and state
+- Use React.FC for functional components
+- Implement proper error boundaries
+
+## Styling
+- Use Tailwind CSS configured in [frontend/tailwind.config.js](mdc:frontend/tailwind.config.js)
+- Use PostCSS configuration from [frontend/postcss.config.js](mdc:frontend/postcss.config.js)
+- Follow utility-first CSS approach
+- Use clsx and tailwind-merge for conditional classes
+
+## API Integration
+- Use Axios for HTTP requests
+- Proxy configuration in [frontend/package.json](mdc:frontend/package.json) points to backend
+- Implement proper error handling for API calls
+- Use React Query or similar for state management
+
+## UI/UX Guidelines
+- Use Lucide React icons for consistency
+- Implement responsive design with Tailwind breakpoints
+- Use React Markdown for content rendering
+- Implement proper loading states and error handling
+
+## Testing
+- Use React Testing Library for component tests
+- Write tests alongside components
+- Mock API service calls in tests
+- Aim for >80% test coverage
+
+## Performance
+- Use React.memo for expensive components
+- Implement proper dependency arrays in useEffect
+- Use lazy loading for route-based code splitting
+description:
+globs:
+alwaysApply: false
+---

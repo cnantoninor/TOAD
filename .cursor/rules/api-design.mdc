@@ -1,0 +1,60 @@
+# API Design Guidelines
+
+## Core Endpoints
+Follow the established API structure documented in [README.md](mdc:README.md):
+
+### Session Management
+- `POST /api/sessions` - Create new session with GUID-based URL
+- `GET /api/sessions/:id` - Get session by ID
+- `POST /api/sessions/:id/messages` - Send message to AI
+- `GET /api/sessions/:id/export` - Export session as Markdown
+
+### Health & Monitoring
+- `GET /health` - Health check endpoint
+
+## Request/Response Patterns
+- Use JSON for all API communication
+- Include correlation IDs in headers for request tracking
+- Implement proper HTTP status codes
+- Return structured error responses
+
+## Session Lifecycle
+1. **Creation**: New session with GUID-based URL
+2. **Usage**: Conversation with AI agent
+3. **Persistence**: Stored in SQLite database
+4. **Cleanup**: Automatically deleted after 30 days
+
+## Data Models
+- Session data includes conversation history (JSON)
+- Custom instructions for AI behavior
+- Current phase tracking
+- Conversation summary (after 20 messages)
+
+## Security Considerations
+- Input validation and sanitization required
+- Rate limiting: 100 requests per 15 minutes per IP
+- Request size limits: 10MB maximum
+- XSS protection through input escaping
+
+## Error Handling
+- Use structured error responses
+- Include correlation IDs in error logs
+- Implement proper HTTP status codes
+- Provide meaningful error messages
+
+## Example Usage
+```bash
+# Create a session
+curl -X POST http://localhost:3001/api/sessions \
+  -H "Content-Type: application/json" \
+  -d '{"customInstructions": "Focus on microservices"}'
+
+# Send a message
+curl -X POST http://localhost:3001/api/sessions/{sessionId}/messages \
+  -H "Content-Type: application/json" \
+  -d '{"content": "I need to design a scalable e-commerce platform"}'
+```
+description:
+globs:
+alwaysApply: false
+---

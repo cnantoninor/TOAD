@@ -8,9 +8,12 @@ backend/build/
 frontend/dist/
 frontend/build/
 
+# database
+backend/data/
+
 # Logs
-./backend/logs/*.log
-./frontend/logs/*.log
+backend/logs/
+frontend/logs/
 backend/npm-debug.log*
 backend/yarn-debug.log*
 backend/yarn-error.log*

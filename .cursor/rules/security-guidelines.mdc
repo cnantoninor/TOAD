@@ -1,0 +1,59 @@
+# Security Guidelines
+
+## Input Validation & Sanitization
+- **All inputs must be validated** using express-validator middleware
+- **Sanitize user inputs** to prevent XSS attacks
+- **Validate request size** (10MB maximum limit)
+- **Use parameterized queries** for database operations
+
+## Authentication & Authorization
+- **Current MVP**: No authentication (sessions accessible via URL)
+- **Future**: Implement proper authentication system
+- **Session management**: GUID-based URLs with 30-day expiration
+- **Rate limiting**: 100 requests per 15 minutes per IP
+
+## Security Headers
+- **Helmet.js**: Configured for security headers
+- **CORS**: Properly configured for cross-origin requests
+- **Content Security Policy**: Implemented to prevent XSS
+- **HSTS**: Enable HTTP Strict Transport Security
+
+## Database Security
+- **SQLite**: Use prepared statements to prevent SQL injection
+- **File permissions**: Secure database file access
+- **Backup strategy**: Regular database backups
+- **Data encryption**: Consider encrypting sensitive data
+
+## API Security
+- **Input validation**: Validate all request parameters
+- **Output encoding**: Properly encode responses
+- **Error handling**: Don't expose sensitive information in errors
+- **Logging**: Log security events without sensitive data
+
+## Frontend Security
+- **XSS Prevention**: Sanitize user inputs before rendering
+- **CSP**: Implement Content Security Policy
+- **HTTPS**: Use HTTPS in production
+- **Dependencies**: Regularly update dependencies for security patches
+
+## Monitoring & Logging
+- **Correlation IDs**: Track requests across the system
+- **Security events**: Log authentication failures, rate limit violations
+- **Error logging**: Log errors without exposing sensitive data
+- **Audit trail**: Maintain logs for security auditing
+
+## Environment Variables
+- **API Keys**: Store OpenAI API key in environment variables
+- **Configuration**: Use [backend/env.example](mdc:backend/env.example) as template
+- **Secrets**: Never commit secrets to version control
+- **Production**: Use secure secret management
+
+## Development Security
+- **Code review**: Review all code changes for security issues
+- **Dependency scanning**: Regularly scan for vulnerable dependencies
+- **Testing**: Include security tests in test suite
+- **Documentation**: Document security decisions and configurations
+description:
+globs:
+alwaysApply: false
+---

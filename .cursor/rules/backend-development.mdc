@@ -1,0 +1,42 @@
+# Backend Development Guidelines
+
+## Architecture Pattern
+Follow the established Express.js structure:
+- **Controllers**: Handle HTTP requests/responses in [backend/src/controllers/](mdc:backend/src/controllers/)
+- **Services**: Business logic in [backend/src/services/](mdc:backend/src/services/)
+- **Models**: Database models in [backend/src/models/](mdc:backend/src/models/)
+- **Middleware**: Request processing in [backend/src/middleware/](mdc:backend/src/middleware/)
+- **Routes**: API endpoints in [backend/src/routes/](mdc:backend/src/routes/)
+- **Utils**: Helper functions in [backend/src/utils/](mdc:backend/src/utils/)
+
+## TypeScript Standards
+- Use strict TypeScript configuration from [backend/tsconfig.json](mdc:backend/tsconfig.json)
+- Define types in [backend/src/types/](mdc:backend/src/types/)
+- Use proper error handling with try-catch blocks
+- Implement input validation using express-validator
+
+## Database
+- SQLite database stored in [backend/data/](mdc:backend/data/)
+- Use prepared statements to prevent SQL injection
+- Implement proper error handling for database operations
+
+## Security
+- All inputs must be validated and sanitized
+- Use Helmet.js for security headers
+- Implement rate limiting (100 requests per 15 minutes per IP)
+- Use correlation IDs for request tracking
+
+## Logging
+- Use Winston logger configured in [backend/src/utils/](mdc:backend/src/utils/)
+- Log levels: error, warn, info, debug
+- Include correlation IDs in all log entries
+
+## Testing
+- Write tests in [backend/src/__tests__/](mdc:backend/src/__tests__/)
+- Use Jest configuration from [backend/jest.config.js](mdc:backend/jest.config.js)
+- Mock OpenAI API calls in tests
+- Aim for >80% test coverage
+description:
+globs:
+alwaysApply: false
+---

@@ -1,0 +1,115 @@
+# Development Workflow
+
+## Getting Started
+1. **Clone and setup**: Follow instructions in [README.md](mdc:README.md)
+2. **Environment**: Copy [backend/env.example](mdc:backend/env.example) to `.env`
+3. **Dependencies**: Run `npm install` in both `backend/` and `frontend/`
+4. **Database**: Ensure [backend/data/](mdc:backend/data/) directory exists
+
+## Development Commands
+
+### Backend Development
+```bash
+cd backend
+npm run dev          # Start development server with hot reload
+npm test             # Run tests
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Run tests with coverage report
+npm run cleanup      # Manual session cleanup
+```
+
+### Frontend Development
+```bash
+cd frontend
+npm start            # Start development server
+npm test             # Run tests
+npm run build        # Build for production
+```
+
+### Database Operations
+- **Location**: [backend/data/](mdc:backend/data/)
+- **Backup**: Copy database file before major changes
+- **Reset**: Delete database file to start fresh
+- **Inspection**: Use SQLite browser or command line tools
+
+## Code Quality Standards
+
+### TypeScript
+- Use strict mode configuration
+- Define proper interfaces and types
+- Avoid `any` type usage
+- Use proper error handling
+
+### Code Style
+- Follow existing code patterns
+- Use meaningful variable and function names
+- Add comments for complex logic
+- Keep functions small and focused
+
+### Git Workflow
+- Use descriptive commit messages
+- Create feature branches for new work
+- Test before committing
+- Update documentation for API changes
+
+## Common Development Tasks
+
+### Adding New API Endpoints
+1. Create route in [backend/src/routes/](mdc:backend/src/routes/)
+2. Add controller in [backend/src/controllers/](mdc:backend/src/controllers/)
+3. Implement service logic in [backend/src/services/](mdc:backend/src/services/)
+4. Add validation middleware
+5. Write tests
+6. Update API documentation
+
+### Adding New React Components
+1. Create component in [frontend/src/components/](mdc:frontend/src/components/)
+2. Add TypeScript interfaces in [frontend/src/types/](mdc:frontend/src/types/)
+3. Update API service if needed
+4. Add component tests
+5. Update styling with Tailwind CSS
+
+### Database Changes
+1. Update models in [backend/src/models/](mdc:backend/src/models/)
+2. Create migration scripts if needed
+3. Update related services
+4. Test with sample data
+5. Update documentation
+
+## Debugging
+
+### Backend Debugging
+- Check logs in [backend/logs/](mdc:backend/logs/)
+- Use `LOG_LEVEL=debug` in `.env`
+- Check health endpoint: `http://localhost:3001/health`
+- Verify environment variables
+
+### Frontend Debugging
+- Use browser developer tools
+- Check network tab for API calls
+- Verify proxy configuration
+- Check console for errors
+
+### Common Issues
+- **Port conflicts**: Change PORT in `.env`
+- **API errors**: Check OpenAI API key and quota
+- **Database errors**: Verify file permissions and directory structure
+- **CORS issues**: Check proxy configuration
+
+## Performance Optimization
+- Monitor API response times
+- Optimize database queries
+- Use React.memo for expensive components
+- Implement proper caching strategies
+- Monitor memory usage
+
+## Deployment Preparation
+- Run full test suite
+- Check test coverage
+- Build frontend for production
+- Verify environment variables
+- Test with production-like data
+description:
+globs:
+alwaysApply: false
+---
