@@ -21,7 +21,7 @@ TOAD Architect is a web-based conversational software architecture assistant tha
 ### Backend (Express API)
 - **Location**: `backend/src/` directory  
 - **Framework**: Express.js with TypeScript
-- **Database**: SQLite (`data/sessions.db`)
+- **Database**: SQLite (`data/TOAD.db`)
 - **AI Integration**: OpenAI GPT-4 API
 - **Architecture Pattern**: MVC with services layer
 - **Key Files**:

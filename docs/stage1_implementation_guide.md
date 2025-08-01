@@ -101,7 +101,7 @@ Create `src/models/database.ts`:
 import sqlite3 from 'sqlite3';
 import path from 'path';
 
-const dbPath = path.join(__dirname, '../../data/sessions.db');
+const dbPath = path.join(__dirname, '../../data/TOAD.db');
 
 export const db = new sqlite3.Database(dbPath);
 

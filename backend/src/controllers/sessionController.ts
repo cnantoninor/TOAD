@@ -244,7 +244,9 @@ function generateMarkdownExport(session: Session): string {
 
     session.conversationHistory.forEach((message, index) => {
         const role = message.role === 'user' ? '👤 User' : '🤖 AI Assistant';
-        const timestamp = message.timestamp.toISOString();
+        const timestamp = message.timestamp instanceof Date 
+            ? message.timestamp.toISOString() 
+            : new Date(message.timestamp).toISOString();
 
         markdown += `### ${role} (${timestamp})\n\n`;
         markdown += `${message.content}\n\n`;

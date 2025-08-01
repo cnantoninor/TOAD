@@ -68,13 +68,20 @@ export class SessionModel {
                         resolve(null);
                     } else {
                         try {
+                            const conversationHistory = JSON.parse(row.conversationHistory || '[]');
+                            // Convert timestamp strings back to Date objects
+                            const processedHistory = conversationHistory.map((msg: any) => ({
+                                ...msg,
+                                timestamp: new Date(msg.timestamp)
+                            }));
+
                             const session: Session = {
                                 sessionId: row.sessionId,
                                 createdAt: new Date(row.createdAt),
                                 lastAccessed: new Date(row.lastAccessed),
                                 currentPhase: row.currentPhase,
                                 customInstructions: row.customInstructions,
-                                conversationHistory: JSON.parse(row.conversationHistory || '[]'),
+                                conversationHistory: processedHistory,
                                 summary: row.summary ? JSON.parse(row.summary) : undefined
                             };
                             resolve(session);
@@ -161,15 +168,24 @@ export class SessionModel {
                         reject(err);
                     } else {
                         try {
-                            const sessions: Session[] = rows.map(row => ({
-                                sessionId: row.sessionId,
-                                createdAt: new Date(row.createdAt),
-                                lastAccessed: new Date(row.lastAccessed),
-                                currentPhase: row.currentPhase,
-                                customInstructions: row.customInstructions,
-                                conversationHistory: JSON.parse(row.conversationHistory || '[]'),
-                                summary: row.summary ? JSON.parse(row.summary) : undefined
-                            }));
+                            const sessions: Session[] = rows.map(row => {
+                                const conversationHistory = JSON.parse(row.conversationHistory || '[]');
+                                // Convert timestamp strings back to Date objects
+                                const processedHistory = conversationHistory.map((msg: any) => ({
+                                    ...msg,
+                                    timestamp: new Date(msg.timestamp)
+                                }));
+
+                                return {
+                                    sessionId: row.sessionId,
+                                    createdAt: new Date(row.createdAt),
+                                    lastAccessed: new Date(row.lastAccessed),
+                                    currentPhase: row.currentPhase,
+                                    customInstructions: row.customInstructions,
+                                    conversationHistory: processedHistory,
+                                    summary: row.summary ? JSON.parse(row.summary) : undefined
+                                };
+                            });
                             resolve(sessions);
                         } catch (parseError) {
                             Logger.error('Error parsing old sessions data', parseError as Error);
