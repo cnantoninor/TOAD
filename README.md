@@ -69,6 +69,38 @@ npm start
 - Backend API: http://localhost:3001
 - Health check: http://localhost:3001/health
 
+## 📋 Session Management
+
+### Continuing Sessions
+
+TOAD Architect supports session persistence, allowing you to continue conversations even after closing your browser:
+
+#### Method 1: URL-Based Access
+- When you create a new session, the URL automatically updates to include your session ID
+- Example: `http://localhost:3000/session/123e4567-e89b-12d3-a456-426614174000`
+- You can bookmark this URL or share it with others to continue the session later
+
+#### Method 2: Session ID Entry
+- Visit the home page at `http://localhost:3000`
+- Enter your session ID in the "Continue Existing Session" field
+- Click "Continue Session" to load your previous conversation
+
+#### Method 3: Copy Session URL
+- While in an active session, click the "Copy URL" button in the header
+- This copies the full session URL to your clipboard
+- You can paste this URL in a new browser tab or share it with others
+
+### Session Features
+- **Automatic Saving**: All conversations are automatically saved
+- **30-Day Retention**: Sessions are kept for 30 days of inactivity
+- **Export Capability**: Export conversations as Markdown files
+- **No Authentication Required**: Sessions are accessible via session ID only
+
+### Session Limitations
+- Sessions are automatically cleaned up after 30 days of inactivity
+- No user authentication - sessions are accessible to anyone with the session ID
+- Maximum of 10 concurrent users (MVP limitation)
+
 ## 📁 Project Structure
 
 ```

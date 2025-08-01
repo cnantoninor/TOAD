@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Session, SessionContextType } from '../types';
 import { sessionApi } from '../services/api';
 
@@ -26,7 +27,7 @@ function sessionReducer(state: SessionState, action: SessionAction): SessionStat
         case 'SET_LOADING':
             return { ...state, isLoading: action.payload };
         case 'SET_SESSION':
-            return { ...state, session: action.payload, error: null };
+            return { ...state, session: action.payload, error: null, isLoading: false };
         case 'SET_ERROR':
             return { ...state, error: action.payload, isLoading: false };
         case 'CLEAR_ERROR':
@@ -45,12 +46,43 @@ const SessionContext = createContext<SessionContextType | undefined>(undefined);
 
 export function SessionProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(sessionReducer, initialState);
+    const { sessionId } = useParams<{ sessionId: string }>();
+    const navigate = useNavigate();
+
+    // Load session from URL parameter
+    useEffect(() => {
+        if (sessionId) {
+            loadSession(sessionId);
+        }
+    }, [sessionId]);
+
+    const loadSession = async (id: string) => {
+        try {
+            dispatch({ type: 'SET_LOADING', payload: true });
+            dispatch({ type: 'CLEAR_ERROR' });
+            
+            const session = await sessionApi.getSession(id);
+            dispatch({ type: 'SET_SESSION', payload: session });
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to load session';
+            dispatch({ type: 'SET_ERROR', payload: errorMessage });
+            // Redirect to home if session not found
+            if (error instanceof Error && error.message.includes('not found')) {
+                navigate('/', { replace: true });
+            }
+        }
+    };
 
     const createSession = async (customInstructions?: string) => {
         try {
             dispatch({ type: 'SET_LOADING', payload: true });
+            dispatch({ type: 'CLEAR_ERROR' });
+            
             const session = await sessionApi.createSession({ customInstructions });
             dispatch({ type: 'SET_SESSION', payload: session });
+            
+            // Update URL to include session ID
+            navigate(`/session/${session.sessionId}`, { replace: true });
         } catch (error) {
             dispatch({ type: 'SET_ERROR', payload: error instanceof Error ? error.message : 'Failed to create session' });
         }

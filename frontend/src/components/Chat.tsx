@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Download, Plus, Bot } from 'lucide-react';
+import { Send, Download, Plus, Bot, Home, Copy, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Message } from './Message';
 import { useSession } from '../contexts/SessionContext';
 import { sessionApi } from '../services/api';
@@ -8,7 +9,9 @@ export function Chat() {
     const { session, isLoading, error, sendMessage, createSession } = useSession();
     const [inputValue, setInputValue] = useState('');
     const [isTyping, setIsTyping] = useState(false);
+    const [copied, setCopied] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -17,6 +20,13 @@ export function Chat() {
     useEffect(() => {
         scrollToBottom();
     }, [session?.conversationHistory]);
+
+    // Redirect to home if no session is available
+    useEffect(() => {
+        if (!session && !isLoading) {
+            navigate('/', { replace: true });
+        }
+    }, [session, isLoading, navigate]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -61,24 +71,46 @@ export function Chat() {
         }
     };
 
-    if (!session) {
+    const handleGoHome = () => {
+        navigate('/');
+    };
+
+    const handleCopySessionId = async () => {
+        if (!session) return;
+
+        const sessionUrl = `${window.location.origin}/session/${session.sessionId}`;
+        
+        try {
+            await navigator.clipboard.writeText(sessionUrl);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (error) {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = sessionUrl;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
+
+    // Show loading state while session is being loaded
+    if (isLoading || !session) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen p-8">
-                <div className="text-center max-w-md">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                        TOAD Architect
-                    </h1>
-                    <p className="text-gray-600 mb-8">
-                        Your AI-powered software architecture assistant. Start a new session to begin designing your software architecture.
+                <div className="text-center">
+                    <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Bot className="w-8 h-8 text-primary-600" />
+                    </div>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                        Loading session...
+                    </h2>
+                    <p className="text-gray-600">
+                        Please wait while we load your session.
                     </p>
-                    <button
-                        onClick={handleNewSession}
-                        disabled={isLoading}
-                        className="btn-primary flex items-center gap-2 mx-auto"
-                    >
-                        <Plus className="w-5 h-5" />
-                        Start New Session
-                    </button>
                 </div>
             </div>
         );
@@ -96,6 +128,30 @@ export function Chat() {
                         </p>
                     </div>
                     <div className="flex items-center gap-3">
+                        <button
+                            onClick={handleCopySessionId}
+                            className="btn-outline flex items-center gap-2"
+                            title="Copy session URL"
+                        >
+                            {copied ? (
+                                <>
+                                    <Check className="w-4 h-4" />
+                                    Copied!
+                                </>
+                            ) : (
+                                <>
+                                    <Copy className="w-4 h-4" />
+                                    Copy URL
+                                </>
+                            )}
+                        </button>
+                        <button
+                            onClick={handleGoHome}
+                            className="btn-outline flex items-center gap-2"
+                        >
+                            <Home className="w-4 h-4" />
+                            Home
+                        </button>
                         <button
                             onClick={handleNewSession}
                             className="btn-outline flex items-center gap-2"

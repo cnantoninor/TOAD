@@ -54,5 +54,13 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "http://localhost:3001"
+    "proxy": "http://localhost:3001",
+    "jest": {
+        "transformIgnorePatterns": [
+            "node_modules/(?!(axios|react-markdown|lucide-react)/)"
+        ],
+        "moduleNameMapper": {
+            "^axios$": "axios/dist/node/axios.cjs"
+        }
+    }
 }
